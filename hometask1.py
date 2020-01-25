@@ -8,7 +8,12 @@
 # Example 12abc when capitalized remains 12abc.
 # Output Format:Print the capitalized string, S.
 
-#name = input("Enter fullname: ")
+name = input("Enter fullname: ")
+list1 = name.split(" ")
+capitalizedName = ""
+for el in list1:
+    capitalizedName = capitalizedName + el.capitalize()+" "
+print(capitalizedName)
 
 # 2. Write a Python program to count the number of characters (character frequency) in a string.
 # Sample String : google.com
@@ -29,7 +34,29 @@
 
 # [start: end: step]
 
-string = input("Enter string: ")
-if len(string)<2: str2=""
-else: str2 = string[:2]+string[len(string)-2:]
-print(str2)
+# string = input("Enter string: ")
+# if len(string)<2: str2=""
+# else: str2 = string[:2]+string[len(string)-2:]
+# print(str2)
+
+# 4. Write a Python program to count the number of strings where the string length is 2 or more and the first and last character are same from a given list of strings. 
+# Sample List : ['abc', 'xyz', 'aba', '1221']
+# Expected Result : 2
+
+# 5. You are given with 3 sets, find if third set is a subset of the first and the second sets
+# Input: set([1,2]), set([2,3), set([2])
+# Expected result: True
+# Input: set([1,2]), set([3,4), set([5])
+# Expected result: False
+
+# 6. Write a Python script to generate and print a dictionary that contains a number (between 1 and n) in the form (x, x*x). 
+# Sample Dictionary ( n = 5) :
+# Expected Output : {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+
+# 7. Write a Python script to merge two Python dictionaries
+
+# 8. Write a Python program to find the highest 3 values in a dictionary
+
+# 9. Write a Python program to remove duplicates from a list.
+
+# 10. Write a Python program to get the difference between the two lists
