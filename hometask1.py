@@ -14,9 +14,9 @@
 # Sample String : google.com
 # Expected Result : {'o': 3, 'g': 2, '.': 1, 'e': 1, 'l': 1, 'm': 1, 'c': 1}
 
-string = input("Enter string: ")
-for leteral in string:
-    print("'"+leteral+"': "+str(string.count(leteral)))
+# string = input("Enter string: ")
+# for leteral in string:
+#     print("'"+leteral+"': "+str(string.count(leteral)))
 
 
 # 3. Write a Python program to get a string made of the first 2 and the last 2 chars from a given a string. If the string length is less than 2, return instead of the empty string. 
@@ -29,7 +29,7 @@ for leteral in string:
 
 # [start: end: step]
 
-# str = input("Enter string: ")
-# if len(str)<2: str2=""
-# else: str2 = str[:2]+str[len(str)-2:]
-# print(str2)
+string = input("Enter string: ")
+if len(string)<2: str2=""
+else: str2 = string[:2]+string[len(string)-2:]
+print(str2)
