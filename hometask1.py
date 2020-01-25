@@ -8,20 +8,23 @@
 # Example 12abc when capitalized remains 12abc.
 # Output Format:Print the capitalized string, S.
 
-name = input("Enter fullname: ")
-list1 = name.split(" ")
-capitalizedName = ""
-for el in list1:
-    capitalizedName = capitalizedName + el.capitalize()+" "
-print(capitalizedName)
+# name = input("Enter fullname: ")
+# list1 = name.split(" ")
+# capitalizedName = ""
+# for el in list1:
+#     capitalizedName = capitalizedName + el.capitalize()+" "
+# print(capitalizedName)
 
 # 2. Write a Python program to count the number of characters (character frequency) in a string.
 # Sample String : google.com
 # Expected Result : {'o': 3, 'g': 2, '.': 1, 'e': 1, 'l': 1, 'm': 1, 'c': 1}
 
-# string = input("Enter string: ")
-# for leteral in string:
-#     print("'"+leteral+"': "+str(string.count(leteral)))
+string = input("Enter string: ")
+m1 = set()
+for leteral in string:
+    m1.add(leteral)
+for leteral in m1:
+    print("'"+leteral+"': "+str(string.count(leteral)))
 
 
 # 3. Write a Python program to get a string made of the first 2 and the last 2 chars from a given a string. If the string length is less than 2, return instead of the empty string. 
