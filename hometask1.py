@@ -19,13 +19,12 @@
 # Sample String : google.com
 # Expected Result : {'o': 3, 'g': 2, '.': 1, 'e': 1, 'l': 1, 'm': 1, 'c': 1}
 
-string = input("Enter string: ")
-m1 = set()
-for leteral in string:
-    m1.add(leteral)
-for leteral in m1:
-    print("'"+leteral+"': "+str(string.count(leteral)))
-
+# string = input("Enter string: ")
+# m1 = set()
+# for leteral in string:
+#     m1.add(leteral)
+# for leteral in m1:
+#     print("'"+leteral+"': "+str(string.count(leteral)))
 
 # 3. Write a Python program to get a string made of the first 2 and the last 2 chars from a given a string. If the string length is less than 2, return instead of the empty string. 
 # Sample String : 'w3resource'
@@ -34,7 +33,6 @@ for leteral in m1:
 # Expected Result : 'w3w3'
 # Sample String : ' w'
 # Expected Result : Empty String
-
 # [start: end: step]
 
 # string = input("Enter string: ")
@@ -45,6 +43,11 @@ for leteral in m1:
 # 4. Write a Python program to count the number of strings where the string length is 2 or more and the first and last character are same from a given list of strings. 
 # Sample List : ['abc', 'xyz', 'aba', '1221']
 # Expected Result : 2
+# list1 = ['abc', 'xyz', 'aba', '1221']
+# number = 0
+# for el in list1:
+#      if (len(el)>1) & (el[0] == el[len(el)-1]): number=number+1
+# print(number)
 
 # 5. You are given with 3 sets, find if third set is a subset of the first and the second sets
 # Input: set([1,2]), set([2,3), set([2])
