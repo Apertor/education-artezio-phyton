@@ -84,7 +84,14 @@ def xml_to_tree(input_xml):
                 tree.update({tag: parent})
     return tree
 
+def static_vars(**kwargs):
+    def decorate(func):
+        for k in kwargs:
+            setattr(func, k, kwargs[k])
+        return func
+    return decorate
 
+@static_vars(nesting=0)
 def xml_parser(input_xml):
     xml_tree = xml_to_tree(input_xml)
     first_tag = list(xml_tree.items())[0][0]
@@ -93,6 +100,7 @@ def xml_parser(input_xml):
 
     if first_tag.find("/") == -1:
         children = []
+        children_str = ''
         children_tree = xml_tree.copy()
         children_tree.__delitem__(first_tag)
         children_tree.__delitem__("</"+tag_to_name(first_tag)+">")
@@ -100,24 +108,38 @@ def xml_parser(input_xml):
         children_tree = {k: v for k, v in filter(lambda value: value[0][:2] != "</", children_tree.items())}
         # print("filtered ", children_tree)
 
+        xml_parser.nesting += 1
+        tab = ""
+        if len(children_tree) > 1:
+            comma = ","
+        else:
+            comma = ""
+        for el in range(xml_parser.nesting):
+            tab += "\t\t"
+
         for tag in children_tree:
             if tag.find("/") != -1:
                 child = {'name': tag_to_name(tag), 'children': []}
-                children.append(child)
+                # children.append(child)
+                child_str=str(child)
+                children_str+="\n\t"+tab+child_str+comma
             else:
                 child_with_child_string = input_xml[input_xml.find(tag): input_xml.find("</"+tag_to_name(tag)+">")+len(tag)+1]
                 # print("child_with_child_string", child_with_child_string)
-                children.append(xml_parser(child_with_child_string))
+                # children.append(xml_parser(child_with_child_string))
+                children_str += "\n"+tab+xml_parser(child_with_child_string)
     else:
         children = []
 
-    parsed = {'name': tag_to_name(first_tag), 'children': children}
-    return parsed
+    # parsed = {'name': tag_to_name(first_tag), 'children': children}
+    parsed_str = "\t{\n"+tab+"'name': "+str(tag_to_name(first_tag))+",\n"+tab+"'children': ["+children_str+"\n"+tab+"]\n"+tab[1:]+"}"
+    return parsed_str
 
 
 def xml_output(input_xml):
     xml_out = xml_parser(input_xml)
-    return xml_out
+    out = str(xml_out)+", "+str(xml_parser.nesting)
+    return out
 
 a = '<root><element1 /><element2 /><element3><element4 /></element3></root>'
 print(a)
