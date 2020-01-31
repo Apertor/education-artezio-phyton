@@ -92,7 +92,7 @@ print("\n#7\ndictionary 1: ", dic1, "\ndictionary 2: ", dic2, "\nmerge of two di
 # print(list1)
 
 import random
-d = {a: random.randint(0,100) for a in range(7)}
+d = {a: random.randint(0, 100) for a in range(7)}
 print("\n#8\ndictionary: ", d)
 list1 = list({k: v for k, v in sorted(d.items(), key=lambda item: item[1])}.values())
 print("highest 3 values in a dictionary: ", list1[len(list1)-3:])
@@ -104,6 +104,6 @@ print("\n#9\ninput list", list1, "\nsorted list", set(list1))
 
 # 10. Write a Python program to get the difference between the two lists
 list1 = [el for el in range(4)]
-list2 = [el for el in range(2,6)]
-print("\n#10\nInput lists",list1, list2)
-print("difference between the two lists",set(list1).symmetric_difference(set(list2)))
+list2 = [el for el in range(2, 6)]
+print("\n#10\nInput lists", list1, list2)
+print("difference between the two lists", set(list1).symmetric_difference(set(list2)))
