@@ -19,12 +19,30 @@
 #       в данном случае у element4 тэга вложенность/глубина 2
 
 
-def tag_parse(input):
-    if (input[:1] == "<") & (input.find("/") == -1):
+def tag_to_name(tag):
+    tag = tag[1:len(tag)-1]
+    if tag[:1] == "/":
+        tag = tag[1:]
+    slash = tag.find("/")
+    if slash != -1:
+        tag = tag[:slash-1]
+    space = tag.find(" ")
+    if space != -1:
+        tag = tag[:space-1]
+    return tag
+
+
+# test_string = ['<root>', '</root>', '<root />']
+# for el in test_string:
+#     print(tag_to_name(el))
+
+
+def tag_parse(input_tag):
+    if (input_tag[:1] == "<") & (input_tag.find("/") == -1):
         key = 'parent'
-    if (input[:1] == "<") & (input[len(input)-2:] == "/>"):
+    if (input_tag[:1] == "<") & (input_tag[len(input_tag) - 2:] == "/>"):
         key = "wo_children"
-    if (input[:2] == "</"):
+    if (input_tag[:2] == "</"):
         key = 'parent_end'
     return key
 
@@ -50,7 +68,6 @@ def xml_to_tree(input_xml):
 
     for tag in xml_tree:
         # print(xml_tree[el])
-
         if xml_tree[tag] == 'parent':
             tree.update({tag: parent})
             parent = tag
@@ -70,101 +87,38 @@ def xml_to_tree(input_xml):
 
 def xml_parser(input_xml):
     xml_tree = xml_to_tree(input_xml)
+    first_tag = list(xml_tree.items())[0][0]
+    # print(tag_to_name(first_tag))
+    # print(to_tag_with_key(input_xml)[first_tag])
 
-    return xml_tree
+    if first_tag.find("/") == -1:
+        children = []
+        children_tree = xml_tree.copy()
+        children_tree.__delitem__(first_tag)
+        children_tree.__delitem__("</"+tag_to_name(first_tag)+">")
+        children_tree = {k: v for k, v in filter(lambda item: item[1] == first_tag, children_tree.items())}
+        children_tree = {k: v for k, v in filter(lambda value: value[0][:2] != "</", children_tree.items())}
+        # print("filtered ", children_tree)
+
+        for tag in children_tree:
+            if tag.find("/") != -1:
+                child = {'name': tag_to_name(tag), 'children': []}
+                children.append(child)
+            else:
+                child_with_child_string = input_xml[input_xml.find(tag): input_xml.find("</"+tag_to_name(tag)+">")+len(tag)+1]
+                # print("child_with_child_string", child_with_child_string)
+                children.append(xml_parser(child_with_child_string))
+    else:
+        children = []
+
+    parsed = {'name': tag_to_name(first_tag), 'children': children}
+    return parsed
 
 
-a = '<root><element1 /><element2 /><element3><element4 /></element3><element5 /></root>'
-# b = '<element1 /><element2 /><element3><element4 /></element3>'
-# c = '<element3><element4 /></element3>'
+def xml_output(input_xml):
+    xml_out = xml_parser(input_xml)
+    return xml_out
+
+a = '<root><element1 /><element2 /><element3><element4 /></element3></root>'
 print(a)
-print(xml_parser(a))
-
-
-
-# def childrenParse(input_xml):
-#     left_brace = input_xml.find("<")
-#     right_brace = input_xml.find(">")
-#     if (len(input_xml) > 0) & (left_brace != -1) & (right_brace != -1):
-#         tag = input_xml[left_brace + 1:right_brace]
-#         rest = input_xml[right_brace + 1:]
-#         children = []
-#         parent = ""
-#
-#         if (tag.find("/>") != -1):
-#             children.append({'name':tag, 'children': []})
-#
-#
-#         else:
-#             if(tag.find("/") == -1):
-#                 rest = rest[:rest.find("</" + tag)]
-#                 # parsed = root_parse(rest)
-#         parsed = {'name': tag, "children": children}
-#
-#     return (rest, parsed, parent)
-#
-# a = '<root><element1 /><element2 /><element3><element4 /></element3></root>'
-# b = '<element1 /><element2 /><element3><element4 /></element3>'
-# c = '<element3><element4 /></element3>'
-# print(a)
-# print(childrenParse(a))
-# print(b)
-# print(childrenParse(b))
-
-
-#
-#
-#
-#
-#
-#
-#
-# def xmlParser(input_xml):
-#     left_brace = input_xml.find("<")
-#     right_brace = input_xml.find(">")
-#     if (len(input_xml) > 0) & (left_brace != -1) & (right_brace != -1):
-#         tag = input_xml[left_brace+1:right_brace]
-#         rest = input_xml[right_brace+1:]
-#         children = []
-#         parsed = {}
-#         parent = ""
-#
-#         if (tag.find("/") == -1):
-#             inside_tag = rest[:rest.find("</" + tag)]
-#             print("inside tag", inside_tag)
-#
-#             brothers_check_list = inside_tag.split("<")[1:]
-#             print("brothers list", brothers_check_list)
-#
-#             # for (len(inside_tag)>0):
-#             #     children.append(xmlParser(inside_tag))
-#
-#             parsed = {'name': tag, 'children': children}  # xmlParser(inside_tag)
-#
-#             # brothers = []
-#             # brothers_check_list = inside_tag.split("<")[1:]
-#             # print("brothers list", brothers_check_list)
-#             # for el in brothers_check_list:
-#             #     brothers.append(el)
-#             #     if (el.find("/") == -1):
-#             #         break
-#             # for el in brothers[:len(brothers) - 1]:
-#             #     tag = el[:el.find(" /")]
-#             #     parsed.append({'name': tag, 'children': []})
-#
-#             # next_el_parse = brothers[len(brothers) - 1]
-#             # next_el = next_el_parse[:next_el_parse.find(">")]
-#             # parsed.append({'name': next_el, 'children': xmlParser(inside_tag)})
-#         else:
-#             parsed = {'name': tag, 'children': []}
-#
-#     return parsed
-#
-#
-# a = '<root><element1 /><element2 /><element3><element4 /></element3></root>'
-# b = '<element1 /><element2 /><element3><element4 /></element3>'
-# c = '<element3><element4 /></element3>'
-# print(a)
-# print(xmlParser(a))
-# print(b)
-# print(xmlParser(b))
+print(xml_output(a))
