@@ -20,6 +20,7 @@
 
 
 def tag_to_name(tag):
+    """Return name of tag without bracket"""
     tag = tag[1:len(tag)-1]
     if tag[:1] == "/":
         tag = tag[1:]
@@ -38,18 +39,19 @@ def tag_to_name(tag):
 
 
 def tag_parse(input_tag):
+    """tag nesting is determined"""
     if (input_tag[:1] == "<") & (input_tag.find("/") == -1):
         key = 'parent'
     if (input_tag[:1] == "<") & (input_tag[len(input_tag) - 2:] == "/>"):
         key = "wo_children"
-    if (input_tag[:2] == "</"):
+    if input_tag[:2] == "</":
         key = 'parent_end'
     return key
 
 
 def to_tag_with_key(input_xml):
     tags = {}
-    while (len(input_xml) > 0):
+    while len(input_xml) > 0:
         left_brace = input_xml.find("<")
         right_brace = input_xml.find(">")
         tag = input_xml[left_brace:right_brace + 1]
@@ -121,8 +123,8 @@ def xml_parser(input_xml):
             if tag.find("/") != -1:
                 child = {'name': tag_to_name(tag), 'children': []}
                 # children.append(child)
-                child_str=str(child)
-                children_str+="\n\t"+tab+child_str+comma
+                child_str = str(child)
+                children_str += "\n\t"+tab+child_str+comma
             else:
                 child_with_child_string = input_xml[input_xml.find(tag): input_xml.find("</"+tag_to_name(tag)+">")+len(tag)+1]
                 # print("child_with_child_string", child_with_child_string)
@@ -132,7 +134,8 @@ def xml_parser(input_xml):
         children = []
 
     # parsed = {'name': tag_to_name(first_tag), 'children': children}
-    parsed_str = "\t{\n"+tab+"'name': "+str(tag_to_name(first_tag))+",\n"+tab+"'children': ["+children_str+"\n"+tab+"]\n"+tab[1:]+"}"
+    parsed_str = "\t{\n"+tab+"'name': "+str(tag_to_name(first_tag))\
+                 +",\n"+tab+"'children': ["+children_str+"\n"+tab+"]\n"+tab[1:]+"}"
     return parsed_str
 
 
