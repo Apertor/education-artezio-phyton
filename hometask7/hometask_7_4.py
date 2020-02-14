@@ -13,8 +13,8 @@ def get_args_dict(function):
         # print(kwargs.items(kwargs))
         args_dict = dict(zip(args_name, args))
         ann = function.__annotations__
-        print(args_dict)
-        print(ann)
+        # print(args_dict)
+        # print(ann)
 
         try:
             for arg in args_dict:
@@ -36,6 +36,7 @@ def get_args_dict(function):
 
 @get_args_dict
 def repeater(s: str, n: int, d) -> str:
+    """test function"""
     print(d)
     return s * n
 
