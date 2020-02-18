@@ -10,10 +10,10 @@
 def get_args_dict(function):
     """decorator for argument type check"""
     def wrapper(*args, **kwargs):
-        args_kwargs_name = function.__code__.co_varnames[:function.__code__.co_argcount]
+        args_kwargs_name = list(function.__code__.co_varnames[:function.__code__.co_argcount])
         ann = function.__annotations__
-        args_kwargs_dict = dict(zip(args_kwargs_name, list(args)
-                                    + [i[1] for i in kwargs.items()]))
+        values = list(args) + [i[1] for i in kwargs.items()]
+        args_kwargs_dict = dict(zip(args_kwargs_name, values))
 
         # print("args and kwargs names: ", args_kwargs_name)
         # print("annotation: ", ann)
@@ -28,9 +28,17 @@ def get_args_dict(function):
         except KeyError as error:
             print(f"No annotation assigned to variable {error}")
             raise
-        return function(*args, **kwargs)
+
+        result = function(*args, **kwargs)
+        if not isinstance(result, ann['return']):
+            print(f"Value '{result}' of 'return'"
+                  f" does not match the type {ann['return']}"
+                  f" specified in the annotation")
+
+        return result
 
     return wrapper
+
 
 # def get_args_dict(fn, *args, **kwargs):
 #     args_names = fn.__code__.co_varnames[:fn.__code__.co_argcount]
@@ -38,9 +46,9 @@ def get_args_dict(function):
 
 
 @get_args_dict
-def repeater(s: str, n: int, d: str = 'j', v: int = 2) -> str:
+def repeater(s: str, n: int, d: str = 'j', v: int = 2) -> int:
     """test function"""
     return [s * n, d, v]
 
 
-print("\n", repeater(2, 3, 1, v="0"))
+repeater(2, 3, 1, v="0")
