@@ -6,26 +6,29 @@
 # В случае несовпадения переданных во время вызова функции аргументов
 # с типами аргументов в аннотации - выводить сообщение.
 
+
 def get_args_dict(function):
     """decorator for argument type check"""
     def wrapper(*args, **kwargs):
-        args_name = function.__code__.co_varnames[:function.__code__.co_argcount]
-        # print(kwargs.items(kwargs))
-        args_dict = dict(zip(args_name, args))
+        args_kwargs_name = function.__code__.co_varnames[:function.__code__.co_argcount]
         ann = function.__annotations__
-        # print(args_dict)
-        # print(ann)
+        args_kwargs_dict = dict(zip(args_kwargs_name, list(args)
+                                    + [i[1] for i in kwargs.items()]))
+
+        # print("args and kwargs names: ", args_kwargs_name)
+        # print("annotation: ", ann)
+        # print("args and kwargs values: ", args_kwargs_dict)
 
         try:
-            for arg in args_dict:
-                if not isinstance(args_dict[arg], ann[arg]):
-                    print(f"Value '{args_dict[arg]}' of variable '{arg}'"
+            for arg in args_kwargs_dict:
+                if not isinstance(args_kwargs_dict[arg], ann[arg]):
+                    print(f"Value '{args_kwargs_dict[arg]}' of variable '{arg}'"
                           f" does not match the type {ann[arg]}"
                           f" specified in the annotation")
         except KeyError as error:
             print(f"No annotation assigned to variable {error}")
             raise
-        return function(*args)
+        return function(*args, **kwargs)
 
     return wrapper
 
@@ -35,9 +38,9 @@ def get_args_dict(function):
 
 
 @get_args_dict
-def repeater(s: str, n: int, d) -> str:
+def repeater(s: str, n: int, d: str = 'j', v: int = 2) -> str:
     """test function"""
-    print(d)
-    return s * n
+    return [s * n, d, v]
 
-repeater(2, 3, 'hi')
+
+print("\n", repeater(2, 3, 1, v="0"))
